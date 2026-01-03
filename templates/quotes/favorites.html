@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Favorite Quotes - DailyDose{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Your Favorite Quotes</h1>
+
+    {% if quotes %}
+        {% for history in quotes %}
+            <div class="quote-card">
+                <p class="quote-text">"{{ history.quote.text }}"</p>
+                <p class="quote-author">- {{ history.quote.author }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        {{ history.sent_at|date:"F d, Y" }} | {{ history.quote.category.name }}
+                    </small>
+                    <button
+                        hx-post="{% url 'toggle_favorite' history.id %}"
+                        hx-swap="outerHTML"
+                        class="btn btn-sm btn-danger">
+                        ★ Favorited
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            You haven't favorited any quotes yet. Go to your <a href="{% url 'quote_history' %}">history</a> to mark quotes as favorites!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

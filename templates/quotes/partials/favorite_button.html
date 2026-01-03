@@ -1,0 +1,6 @@
+<button
+    hx-post="{% url 'toggle_favorite' history.id %}"
+    hx-swap="outerHTML"
+    class="btn btn-sm btn-outline-{{ history.is_favorite|yesno:'danger,secondary' }}">
+    {{ history.is_favorite|yesno:'★ Favorited,☆ Favorite' }}
+</button>

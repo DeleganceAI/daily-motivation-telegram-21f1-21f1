@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Quote History - DailyDose{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Your Quote History</h1>
+
+    {% if quotes %}
+        {% for history in quotes %}
+            <div class="quote-card">
+                <p class="quote-text">"{{ history.quote.text }}"</p>
+                <p class="quote-author">- {{ history.quote.author }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        {{ history.sent_at|date:"F d, Y" }} | {{ history.quote.category.name }}
+                    </small>
+                    <button
+                        hx-post="{% url 'toggle_favorite' history.id %}"
+                        hx-swap="outerHTML"
+                        class="btn btn-sm btn-outline-{{ history.is_favorite|yesno:'danger,secondary' }}">
+                        {{ history.is_favorite|yesno:'★ Favorited,☆ Favorite' }}
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            You haven't received any quotes yet. Your first quote will arrive at your scheduled time!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

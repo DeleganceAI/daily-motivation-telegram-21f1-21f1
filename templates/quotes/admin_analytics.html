@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Analytics - DailyDose{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Analytics Dashboard</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ total_users }}</h3>
+                    <p class="card-text text-muted">Total Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ active_users }}</h3>
+                    <p class="card-text text-muted">Active Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ total_quotes }}</h3>
+                    <p class="card-text text-muted">Total Quotes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ total_sent }}</h3>
+                    <p class="card-text text-muted">Quotes Sent</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Popular Categories</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Quote Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in popular_categories %}
+                                <tr>
+                                    <td>{{ category.name }}</td>
+                                    <td>{{ category.quote_count }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Deliveries</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Quote</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for delivery in recent_deliveries %}
+                                <tr>
+                                    <td>{{ delivery.user.username }}</td>
+                                    <td>{{ delivery.quote.text|truncatewords:5 }}</td>
+                                    <td>{{ delivery.sent_at|date:"M d, Y" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="/admin/" class="btn btn-primary">Go to Admin Panel</a>
+    </div>
+</div>
+{% endblock %}

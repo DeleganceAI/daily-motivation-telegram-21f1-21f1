@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - DailyDose{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Welcome, {{ user.username }}!</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ total_quotes_received }}</h3>
+                    <p class="card-text text-muted">Total Quotes Received</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ favorite_quotes.count }}</h3>
+                    <p class="card-text text-muted">Favorite Quotes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">{{ user.preferred_time|time:"g:i A" }}</h3>
+                    <p class="card-text text-muted">Delivery Time (UTC)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Recent Quotes</h3>
+            {% if recent_quotes %}
+                {% for history in recent_quotes %}
+                    <div class="quote-card">
+                        <p class="quote-text">"{{ history.quote.text }}"</p>
+                        <p class="quote-author">- {{ history.quote.author }}</p>
+                        <small class="text-muted">
+                            {{ history.sent_at|date:"F d, Y" }} | {{ history.quote.category.name }}
+                        </small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">You haven't received any quotes yet. Your first quote will arrive at your scheduled time!</p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-4">
+            <h3>Favorite Quotes</h3>
+            {% if favorite_quotes %}
+                {% for history in favorite_quotes %}
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <p class="mb-1">"{{ history.quote.text|truncatewords:10 }}"</p>
+                            <small class="text-muted">- {{ history.quote.author }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+                <a href="{% url 'favorites' %}" class="btn btn-sm btn-outline-primary">View All Favorites</a>
+            {% else %}
+                <p class="text-muted">No favorites yet. Mark quotes as favorite to see them here!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
